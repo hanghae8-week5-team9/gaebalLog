@@ -7,10 +7,10 @@ import { useParams, useNavigate } from "react-router-dom";
 
 const Comment = () => {
   const param = useParams();
-  console.log(param);
+  console.log(param.id);
   const navigate = useNavigate();
 
-  const [comments, setComments] = useState(null);
+  const [comments, setComments] = useState([]);
 
   //get 요청  = 댓글(http://localhost:3001/comments)
   const fetchComment = async () => {
@@ -22,9 +22,12 @@ const Comment = () => {
   const [comment, setComment] = useState({
     nickname: "",
     comment: "",
+    comment_id: param.id,
   });
-  const onSubmitHandler = (comment) => {
+  const onSubmitHandler = (event) => {
     axios.post("http://localhost:3001/comments", comment);
+
+    //!작동안됨
     navigate(`/detail/${param.id}`);
   };
   //delete 요청
@@ -51,14 +54,13 @@ const Comment = () => {
   return (
     <div>
       <form
-        onSubmit={(e) => {
-          e.preventDefault();
+        onSubmit={(event) => {
+          event.preventDefault();
           onSubmitHandler(comment);
           setComment({
             id: 0,
-            nickname: "",
             comment: "",
-            comment_id: "",
+            comment_id: param.id,
           });
         }}
       >
@@ -78,8 +80,8 @@ const Comment = () => {
         <input
           type="text"
           placeholder="댓글입력"
-          onChange={(x) => {
-            const { value } = x.target;
+          onChange={(event) => {
+            const { value } = event.target;
             setComment({
               ...comment,
               comment: value,
@@ -90,7 +92,7 @@ const Comment = () => {
 
         <div>
           {/* //map 에 물음표(?)는 왜들어가지??????? */}
-          {comments?.map((c) => (
+          {comments.map((c) => (
             <div key={c.id}>
               닉네임:{c.nickname} - 댓글내용:{c.comment}
               <button
