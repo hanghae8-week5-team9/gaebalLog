@@ -7,7 +7,9 @@ import { todoList, postSlice } from "../modules/post";
 
 export default configureStore({
   //state를 등록한다(객체를)
+  //중앙관제탑같은거다 꼭 등록을 해줘야 한다.
   reducer: {
+    //key와 value가 같을시 생략가능 --> todolist이렇게 써도 된다.
     todoList: todoList.reducer, //작명 : createslice만든거.reducer
     postSlice: postSlice.reducer,
   },

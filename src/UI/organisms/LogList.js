@@ -104,7 +104,7 @@ const LogList = () => {
 };
 
 const StFather = styled.div`
-  display: block;
+  display: flex;
   width: 1200px;
   height: 800px;
   flex-wrap: wrap;
@@ -123,17 +123,21 @@ const StRecordBtn = styled.button`
 `;
 
 const StTempBox = styled.button`
-  cursor: pointer;
+  // cursor: pointer;
+  margin-top: 20px;
   padding: 12px;
-  height: 100px;
+  height: 20rem;
   border: 1px solid rgb(221, 221, 221);
-  background-color: rgb(255, 255, 255);
-  border-radius: 12px;
-  width: 100%;
-  margin-bottom: 12px;
-  background-color: thistle;
+  // background-color: rgb(255, 255, 255);
+  // border-radius: 12px;
+  width: 15rem;
+  // margin-bottom: 12px;
+  // background-color: thistle;
   display: flex;
-  flex-wrap: wrap;
-  margin-top: 10px;
+  // flex-wrap: wrap;
+  // margin-top: 10px;
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow: 9px 9px 18px #e0e0e0, -9px -9px 18px #ffffff;
 `;
 export default LogList;
