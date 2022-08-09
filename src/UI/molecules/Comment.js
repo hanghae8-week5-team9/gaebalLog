@@ -7,16 +7,9 @@ import { useParams, useNavigate } from "react-router-dom";
 
 const Comment = () => {
   const param = useParams();
-  console.log(param.id);
   const navigate = useNavigate();
 
   const [comments, setComments] = useState([]);
-
-  //get 요청  = 댓글(http://localhost:3001/comments)
-  const fetchComment = async () => {
-    const { data } = await axios.get("http://localhost:3001/comments");
-    setComments(data);
-  };
 
   //post 요청
   const [comment, setComment] = useState({
@@ -30,11 +23,23 @@ const Comment = () => {
     //!작동안됨
     navigate(`/detail/${param.id}`);
   };
+  //get 요청  = 댓글(http://localhost:3001/comments)
+  const fetchComment = async () => {
+    const { data } = await axios.get("http://localhost:3001/comments");
+    setComments(data);
+  };
   //delete 요청
+  let [test, settest] = useState(0);
   const onClickDeleteButtonHandler = (deleteComment) => {
     axios.delete(`http://localhost:3001/comments/${deleteComment}`);
+    setComments(comments);
   };
 
+  useEffect(() => {
+    fetchComment();
+  }, [comment]);
+
+  useEffect(() => {});
   // //edit 요청 - 미완성
   // const [targetId, setTargetId] = useState(null);
   // const [editComment, setEditComment] = useState({
@@ -45,11 +50,6 @@ const Comment = () => {
   // const onClickEditButtonHandler = (commentId, t) => {
   //   axios.patch(`http://localhost:3001/comments/${commentId}`, t);
   // };
-
-  //useEffect
-  useEffect(() => {
-    fetchComment();
-  }, [comment]);
 
   return (
     <div>
@@ -98,7 +98,10 @@ const Comment = () => {
               <button
                 type="button"
                 onClick={() => {
-                  onClickDeleteButtonHandler(c.id);
+                  console.log(c.id);
+                  settest(c.id);
+                  console.log(test);
+                  onClickDeleteButtonHandler(test);
                   // navigate("/");
                 }}
               >

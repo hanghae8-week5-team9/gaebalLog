@@ -69,35 +69,36 @@
       "body": "ff\nfgfg\nfgfg\nfgf\n\nfgfg\nfgf",
       "img": "",
       "id": 19
+    },
+    {
+      "id": 20
+    },
+    {
+      "nickname": "너",
+      "title": "야",
+      "body": "진짜짜증나",
+      "img": "",
+      "id": 21
+    },
+    {
+      "nickname": "ㅗㅓㅗ",
+      "title": "ㅗㅓㅗㅓ",
+      "body": "ㅗㅓㅗ",
+      "img": "",
+      "id": 22
     }
   ],
   "comments": [
     {
-      "nickname": "ghg",
-      "comment": "ghg",
+      "nickname": "dcccc",
+      "comment": "ccc",
+      "comment_id": "8",
       "id": 1
     },
     {
-      "id": 2,
-      "nickname": "ghgghg",
-      "comment": "ghgghgh",
-      "comment_id": ""
-    },
-    {
-      "nickname": "ffg",
-      "comment": "g",
-      "id": 3
-    },
-    {
-      "id": 4,
-      "comment": "t",
-      "comment_id": "",
-      "nickname": "ffgrtgft"
-    },
-    {
-      "id": 5,
-      "comment": "g",
-      "comment_id": ""
+      "id": 3,
+      "comment": "",
+      "comment_id": "8"
     }
   ]
 }
