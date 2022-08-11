@@ -14,8 +14,12 @@ const EditComment = ({ setModal, param, commentId, editComment }) => {
     nickname: editComment.nickname,
     comment: editComment.comment,
   });
-  //!여기~~!!!!
-  const commentData = { nickname, comment, comment_id: parseInt(param) };
+  const commentData = {
+    nickname,
+    comment,
+    comment_id: parseInt(param),
+    id: parseInt(commentId),
+  };
   const updatehandler = (e) => {
     e.preventDefault();
     dispatch(updateComment({ commentId, commentData }));
@@ -24,7 +28,7 @@ const EditComment = ({ setModal, param, commentId, editComment }) => {
   return (
     <StEditComnt onSubmit={(e) => updatehandler(e)}>
       <div>
-        <span style={{ "font-size": "2rem" }}>↳</span>{" "}
+        <span style={{ fontSize: "2rem" }}>↳</span>{" "}
         <StInput
           type="text"
           value={nickname}

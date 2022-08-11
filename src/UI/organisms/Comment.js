@@ -18,14 +18,12 @@ const Comment = () => {
 
   useEffect(() => {
     dispatch(fetchComments());
-  }, [modal]);
+  }, []);
   return (
     <CommentContainer>
       <PostComment />
       {data.map((c, i) => {
-        //!여기!!!!!!!!!!!
-        if (parseInt(c.comment_id) === parseInt(param.id)) {
-          console.log(typeof param.id);
+        if (parseInt(c.comment_id) == parseInt(param.id)) {
           return (
             <div key={c.id}>
               <ListComment
