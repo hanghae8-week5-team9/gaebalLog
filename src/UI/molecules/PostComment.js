@@ -10,20 +10,22 @@ import { StInput } from "../atoms/StInput";
 
 const PostComment = () => {
   const param = useParams();
+  //!여기!!!!!!!!!
+  let 넘버 = parseInt(param.id);
   const dispatch = useDispatch();
 
   const [{ nickname, comment }, onChange, reset, toggle] = useInputs({
     nickname: "",
     comment: "",
   });
-  const commentData = { nickname, comment, comment_id: param.id };
-
+  //!여기!!!!!!!!!!!
+  const commentData = { nickname, comment, comment_id: 넘버 };
   const onSubmitHandler = (e) => {
     e.preventDefault();
     dispatch(addComment(commentData));
     reset();
   };
-
+  console.log(commentData);
   return (
     <StPostComnt
       onSubmit={(e) => {
