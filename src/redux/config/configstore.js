@@ -5,12 +5,14 @@ import { configureStore } from "@reduxjs/toolkit";
 
 import { postSlice } from "../modules/post";
 import { commentSlice } from "../modules/comment";
+import deleteList from "../modules/test";
 
 export default configureStore({
   //state를 등록한다(객체를)
   reducer: {
     postSlice: postSlice.reducer,
     commentSlice: commentSlice.reducer,
+    deleteList: deleteList.reducer,
   },
   devTools: process.env.NODE_ENV !== "development",
 });
