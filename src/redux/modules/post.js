@@ -1,38 +1,72 @@
 import { createSlice, createAsyncThunk, isRejected } from "@reduxjs/toolkit";
 import axios from "axios";
 
+const url_params = "http://localhost:3001/gaebalog";
 const initialState = {
   loading: false,
   posts: [],
   error: "",
 };
-//!generate pending, fulfilled , rejected action types
-//! asyncthunk has two parameters . action type, callback function
-const fetchPosts = createAsyncThunk("post/fetchPosts", async (thunkApi) => {
-  const res = await fetch("http://localhost:3001/gaebalog").then((data) =>
-    data.json()
-  );
-  console.log(res);
-  return res;
+
+export const fetchPosts = createAsyncThunk(
+  "post/fetchPost",
+  async (thunkApi) => {
+    try {
+      const res = await axios.get(`${url_params}/gaebalog`);
+      return res.data;
+    } catch (error) {
+      return error.message;
+    }
+  }
+);
+
+export const addPost = createAsyncThunk("post/addPost", async (logData) => {
+  try {
+    const response = await axios.post(`${url_params}/gaebalog`, logData);
+    return response.data;
+  } catch (error) {
+    return error.message;
+  }
 });
 
-export const addPost = createAsyncThunk("post/addPosts", async (logData) => {
-  const response = await axios.post("http://localhost:3001/gaebalog", logData);
-  return response.data;
-});
+export const deletePost = createAsyncThunk(
+  "delete/deletePost",
+  async (postId) => {
+    try {
+      const response = await axios.delete(`${url_params}/gaebalog/${postId}`);
+      return postId;
+    } catch (error) {
+      return error.message;
+    }
+  }
+);
 
-//!builder is cases of each lifecycle mothods
+export const updatePost = createAsyncThunk(
+  "put/updatePost",
+  async ({ logData, postId }) => {
+    try {
+      const response = await axios.put(
+        `${url_params}/gaebalog/${postId}`,
+        logData
+      );
+      return { postId, logData };
+    } catch (error) {
+      return error.message;
+    }
+  }
+);
+
 const postSlice = createSlice({
   name: "posts",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
+    //!보여주기
     builder.addCase(fetchPosts.pending, (state) => {
       state.loading = true;
     });
     builder.addCase(fetchPosts.fulfilled, (state, action) => {
       state.loading = false;
-      //state.posts.push(action.payload);
       state.posts = action.payload;
       state.error = "";
     });
@@ -41,43 +75,56 @@ const postSlice = createSlice({
       state.posts = [];
       state.error = action.error.message;
     });
+    //!가져오기
+    builder.addCase(addPost.pending, (state) => {
+      state.loading = true;
+    });
     builder.addCase(addPost.fulfilled, (state, action) => {
       state.loading = false;
       state.posts = [...state.posts, action.payload];
-      //state.posts.push(action.payload);
       state.error = "";
+    });
+    builder.addCase(addPost.rejected, (state, action) => {
+      state.loading = false;
+      state.posts = [];
+      state.error = action.error.message;
+    });
+    //!삭제하기
+    builder.addCase(deletePost.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(deletePost.fulfilled, (state, action) => {
+      state.loading = false;
+      state.posts = state.posts.filter((post) => post.id != action.payload);
+      state.error = "";
+    });
+    builder.addCase(deletePost.rejected, (state, action) => {
+      state.loading = false;
+      state.posts = [];
+      state.error = action.error.message;
+    });
+    //!수정하기
+    builder.addCase(updatePost.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(updatePost.fulfilled, (state, action) => {
+      state.loading = false;
+      state.posts = state.posts.map((post) => {
+        if (post.id === action.payload.postId) {
+          return action.payload.logData;
+        } else {
+          return post;
+        }
+      });
+      state.error = "";
+    });
+    builder.addCase(updatePost.rejected, (state, action) => {
+      state.loading = false;
+      state.posts = [];
+      state.error = action.error.message;
     });
   },
 });
 
-//!투두예시----------------------------------------------
-let todoList = createSlice({
-  //slice만들때 선언한 slice의 name에 따라서 액션 생성자, 액션 타입, 리듀서를 자동으로 생성해줍니다. 따라서 별도로 createAction이나 createReducer를 사용하지 않아도 됩니다.
-
-  name: "todoList", //slice이름
-  initialState: [
-    { id: 1, title: "공부하기", body: "리액트과제", isDone: false },
-    { id: 2, title: "옷사러가기", body: "언니랑같이가기", isDone: false },
-    { id: 3, title: "친구만나기", body: "저녁8시", isDone: false },
-    { id: 4, title: "아오그만하고싶네", body: "새벽까지", isDone: true },
-  ],
-  reducers: {
-    addHandler(state, action) {
-      state.push(action.payload);
-    },
-
-    doneHandler(state, action) {
-      let 번호 = state.findIndex((a) => {
-        return a.id === action.payload;
-      });
-      state[번호].isDone = !state[번호].isDone;
-    },
-    deleteHandler(state, action) {
-      state.splice(action.payload, 1);
-    },
-  },
-});
-
-export let { addHandler, doneHandler, deleteHandler } = todoList.actions;
-export { todoList, postSlice, fetchPosts };
+export { postSlice };
 export const postReducer = postSlice.reducer;
