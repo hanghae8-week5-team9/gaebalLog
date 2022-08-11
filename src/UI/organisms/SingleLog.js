@@ -14,26 +14,16 @@ import Comment from "../organisms/Comment";
 import { deleteComment } from "../../redux/modules/comment";
 
 const SingleLog = () => {
-  //const [log, setLog] = useState(null); //json server의 값을 불러오기 위해 useState선언
   const param = useParams();
   const dispatch = useDispatch();
   const nav = useNavigate();
   const log = useSelector((state) => state.postSlice.posts);
   const data = useSelector((state) => state.commentSlice.comments);
   //!겟함수
-
-  // 생성한 함수를 컴포넌트가 mount됐을 때 실행하기 위해 useEffect사용
   useEffect(() => {
     dispatch(fetchPosts());
   }, []);
 
-  // console.log(log); //data fetching이 잘 되었는지 콘솔을 통해서 확인한다
-  // 삭제하기(삭제 후 메인으로 돌아가는 로직을 추가>0806)
-  //!수정모드
-  //dispatch(updatePost({ postId, logData }))
-  // const onDeleteGaebalLog = (logID) => {
-  //   axios.delete(`http://localhost:3001/gaebalog/${logID}`).then(nav("/"));
-  // };
   const [modal, setModal] = useState(false);
   const onShowEditForm = () => {
     setModal(!modal);
@@ -64,12 +54,10 @@ const SingleLog = () => {
                         (element) =>
                           parseInt(element.comment_id) === parseInt(log.id)
                       );
-                      if (found === undefined) {
-                        if (window.confirm("정말로 삭제하시겠습니까?")) {
+                      if (window.confirm("정말로삭제하시겠습니까?")) {
+                        if (found === undefined) {
                           dispatch(deletePost(log.id)).then(nav("/"));
-                        }
-                      } else {
-                        if (window.confirm("정말로삭제하시겠습니까?")) {
+                        } else {
                           found = found.id;
                           dispatch(deletePost(log.id));
                           dispatch(deleteComment(found)).then(nav("/"));
