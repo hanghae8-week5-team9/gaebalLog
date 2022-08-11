@@ -14,4 +14,5 @@ export default configureStore({
     commentSlice: commentSlice.reducer,
     deleteList: deleteList.reducer,
   },
+  devTools: process.env.NODE_ENV !== "development",
 });
